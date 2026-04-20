@@ -1,28 +1,36 @@
 pipeline {
     agent any
+
     stages {
         stage('Clone') {
             steps {
-                echo 'Cloning repository...'
+                echo 'Code cloned successfully!'
             }
         }
-        stage('Build') {
+
+        stage('Install') {
             steps {
-                echo 'Building...'
+                sh 'npm install'
             }
         }
+
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
+                sh '''
+                    sudo pm2 stop myapp || true
+                    sudo pm2 start app.js --name myapp
+                    sudo pm2 save
+                '''
             }
         }
     }
+
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo '✅ Deployed successfully!'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo '❌ Deployment failed!'
         }
     }
 }
