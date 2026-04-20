@@ -3,20 +3,26 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git branch: 'main', url: 'git@github.com:username/repo.git'
+                echo 'Cloning repository...'
             }
         }
         stage('Build') {
             steps {
                 echo 'Building...'
-                // add your build commands here
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
-                // add your deploy commands here
             }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
